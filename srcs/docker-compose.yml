@@ -1,0 +1,31 @@
+version: '3'
+services:
+  wordpress:
+    build:
+      context: ./wordpress # WordPress用のDockerfileがあるディレクトリを指定
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+    volumes:
+      - ./wordpress/wp-content:/var/www/html/wp-content
+    depends_on:
+      - db
+
+  mariadb:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: examplepass
+      MYSQL_DATABASE: exampledb
+
+  nginx:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: examplepass
+      MYSQL_DATABASE: exampledb
+
+volumes:
+  wordpress-db:
