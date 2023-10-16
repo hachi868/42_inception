@@ -1,40 +1,68 @@
 version: '3'
 services:
-  wordpress:
+  mariadb:
+    image: mariadb:custom
     build:
-      context: ./wordpress # WordPress用のDockerfileがあるディレクトリを指定
+      context: ./requirements/mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+    volumes:
+      - data-db:/var/lib/mariadb
+    networks:
+      - docker-network
+    ports:
+      - "3306:3306"
+    restart: always
+
+  wordpress:
+    image: wordpress:custom
+    build:
+      context: ./requirements/wordpress # WordPress用のDockerfileがあるディレクトリを指定
     ports:
       - "9000:80"
     environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: exampleuser
-      WORDPRESS_DB_PASSWORD: examplepass
-      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
     volumes:
-      - ./wordpress/wp-content:/var/www/html/wp-content
+      - data-wp:/var/www/html/wp
+    networks:
+      - docker-network
+    restart: always
     depends_on:
       - mariadb
 
-  mariadb:
-    image: mariadb:latest
-    environment:
-      MYSQL_ROOT_PASSWORD: examplepass
-      MYSQL_DATABASE: exampledb
-#      MYSQL_USER: wordpress
-#      MYSQL_PASSWORD: wp-password
-#    volumes:
-#      - db_data:/var/lib/mysql
-    ports:
-      - "3306:3306"
-
   nginx:
-    image: nginx:latest
+    image: nginx:custom
+    build:
+      context: ./requirements/nginx
     ports:
       - "443:443"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - data-wp:/var/www/html/wp
+    networks:
+      - docker-network
+    restart: always
     depends_on:
       - wordpress
 
+networks:
+  docker-network:
+
 volumes:
-  wordpress-db:
+  data-db:
+    driver: local
+    driver_opts:
+      type: none       # "none" => ローカルディレクトリを使用
+      o: bind          # "bind" => 実体ディレクトリをバインド
+      device: ${PATH_DATA}db    # 実体path
+  data-wp:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PATH_DATA}wp

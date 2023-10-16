@@ -1,0 +1,5 @@
+FROM debian:oldstable
+ADD
+RUN
+ENTRYPOINT
+EXPOSE
