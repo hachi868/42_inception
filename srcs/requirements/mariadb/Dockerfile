@@ -9,10 +9,11 @@ RUN apt-get update && \
 
 COPY ./tools/setup.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/setup.sh
-ENTRYPOINT ["setup.sh"]
 
 # ポート3306を公開
 EXPOSE 3306
+
+ENTRYPOINT ["setup.sh"]
 
 # MariaDBサーバーを実行
 CMD ["mysqld"]
