@@ -15,10 +15,14 @@ down:
 # コンテナのステータスを表示するターゲット
 ps:
 	docker compose -f $(COMPOSE_FILE) ps
+
 #logs:
 #	docker compose -f $(COMPOSE_FILE) logs
-#build:
-#	docker compose -f $(COMPOSE_FILE) build
+
+# キャッシュなしでbuild
+build:
+	docker compose -f $(COMPOSE_FILE) build --no-cache
+
 rm:
 	docker compose -f $(COMPOSE_FILE) rm
 
