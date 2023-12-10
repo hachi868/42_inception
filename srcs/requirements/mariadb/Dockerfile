@@ -1,5 +1,18 @@
 FROM debian:oldstable
-ADD
-RUN
-ENTRYPOINT
-EXPOSE
+
+RUN apt-get update && \
+    apt-get install -y mariadb-server && \
+    # キャッシュのクリーンアップ
+    apt-get clean && \
+    # 一時ファイル削除
+    rm -rf /var/lib/apt/lists/*
+
+COPY ./tools/setup.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/setup.sh
+ENTRYPOINT ["setup.sh"]
+
+# ポート3306を公開
+EXPOSE 3306
+
+# MariaDBサーバーを実行
+CMD ["mysqld"]
