@@ -1,28 +1,35 @@
-version: '3'
+version: '3.8'
 services:
   mariadb:
-    image: mariadb:custom
+    image: mariadb:42_inception
     build:
       context: ./requirements/mariadb
+      dockerfile: Dockerfile
+    ports:
+      - "3306:3306"
+    env_file:
+      .env
     environment:
       - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MARIADB_DATABASE}
       - MYSQL_USER=${MARIADB_USER}
       - MYSQL_PASSWORD=${MARIADB_PASSWORD}
     volumes:
+      - ./requirements/mariadb/conf/mariadb.cnf:/etc/mysql/mariadb.cnf
       - data-db:/var/lib/mariadb
     networks:
       - docker-network
-    ports:
-      - "3306:3306"
     restart: always
 
   wordpress:
-    image: wordpress:custom
+    image: wordpress:42_inception
     build:
-      context: ./requirements/wordpress # WordPress用のDockerfileがあるディレクトリを指定
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
     ports:
       - "9000:80"
+    env_file:
+      .env
     environment:
       - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
       - WORDPRESS_DB_NAME=${MARIADB_DATABASE}
@@ -35,11 +42,14 @@ services:
     restart: always
     depends_on:
       - mariadb
+#      mariadb:
+#        condition: service_healthy
 
   nginx:
-    image: nginx:custom
+    image: nginx:42_inception
     build:
       context: ./requirements/nginx
+      dockerfile: Dockerfile
     ports:
       - "443:443"
     volumes:
@@ -48,7 +58,12 @@ services:
       - docker-network
     restart: always
     depends_on:
+      - mariadb
       - wordpress
+#      mariadb:
+#        condition: service_healthy
+#      wordpress:
+#        condition: service_healthy
 
 networks:
   docker-network:
@@ -56,13 +71,5 @@ networks:
 volumes:
   data-db:
     driver: local
-    driver_opts:
-      type: none       # "none" => ローカルディレクトリを使用
-      o: bind          # "bind" => 実体ディレクトリをバインド
-      device: ${PATH_DATA}db    # 実体path
   data-wp:
     driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ${PATH_DATA}wp
