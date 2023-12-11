@@ -10,9 +10,10 @@ RUN apt-get update && \
     unzip \
     wget
 
-# Ondřej SurýのPHPリポジトリを追加
-RUN curl -fsSL https://packages.sury.org/php/apt.gpg | apt-key add - \
-    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+# GPG 鍵のダウンロード
+RUN curl -fsSL https://packages.sury.org/php/apt.gpg -o /usr/share/keyrings/php.gpg
+# PHP リポジトリの追加
+RUN echo "deb [signed-by=/usr/share/keyrings/php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
 
 RUN apt-get update && apt-get install -y \
     php8.2 \
