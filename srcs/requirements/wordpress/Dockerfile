@@ -24,27 +24,33 @@ RUN apt-get update && apt-get install -y \
     php8.2-mbstring \
     php8.2-xml \
     php8.2-zip && \
-      apt-get clean && \
-      rm -rf /var/lib/apt/lists/* && \
-      mkdir -p /var/www/html && \
-      mkdir -p /run/php/ && \
-      curl -o /tmp/wordpress.zip -SL https://wordpress.org/latest.zip && \
-      unzip /tmp/wordpress.zip -d /var/www/html/ && \
-      rm /tmp/wordpress.zip && \
-      chown -R www-data:www-data /var/www/html/
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    mkdir -p /var/www/html && \
+    mkdir -p /run/php/ && \
+    # -o: 指定ファイルパスに保存 -S: エラー時詳細ログ -L: リダイレクト先にアクセス
+    curl -o /tmp/wordpress.zip -SL https://wordpress.org/latest.zip && \
+    # -d: 指定ディレクトリに展開
+    unzip /tmp/wordpress.zip -d /var/www/html/ && \
+    rm /tmp/wordpress.zip && \
+    # 所有権変更 `(ユーザー名):` ユーザー名,グループ名を同じ名で設定
+    chown -R www-data: /var/www/html/ && \
+    curl -o /tmp/wp-cli.phar -SL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    mv /tmp/wp-cli.phar /var/www/html/ && \
+    chmod +x /var/www/html/wp-cli.phar && \
+    wp --info
 
 # Download and install WordPress, chown www-dataに所有権変更
-# Todo: wpはDLしておきたい。
+# Todo: wpはDLしておきたい。　wpバージョン？
 
-# Configure php-fpm to listen on a socket
-RUN sed -i -e 's/;listen.owner = www-data/listen.owner = www-data/' \
-    -e 's/;listen.group = www-data/listen.group = www-data/' \
-    -e 's/;listen.mode = 0660/listen.mode = 0660/' \
-    -e 's/;listen = 127.0.0.1:9000/listen =　9000/' \
-    /etc/php/8.2/fpm/pool.d/www.conf
+COPY ./tools/setup.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/setup.sh
 
 # port設定はcompose.yml
 #EXPOSE 9000
 
+ENTRYPOINT ["/usr/local/bin/setup.sh"]
+
 # Start php-fpm
+# todo: php-fpm.confとの関係確認
 CMD ["php-fpm8.2", "--nodaemonize"]
