@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /var/www/html/wordpress/ && \
     mkdir -p /var/www/.wp-cli/cache/ && \
-    mkdir -p /run/php/ && \
+    mkdir -p /var/run/php/ && \
     # -o: 指定ファイルパスに保存 -S: エラー時詳細ログ -L: リダイレクト先にアクセス
 #    curl -o /tmp/wordpress.zip -SL https://wordpress.org/latest.zip && \
 #    # -d: 指定ディレクトリに展開
@@ -39,6 +39,8 @@ RUN apt-get update && apt-get install -y \
     # 所有権変更 `(ユーザー名):` ユーザー名,グループ名を同じ名で設定 todo: root実行にしたのでいらないかも。
     chown -R www-data: /var/www/ && \
     chmod -R +x /var/www/ && \
+    chown -R www-data: /var/run/php/ && \
+    chmod -R +x /var/run/php/ && \
     curl -o /tmp/wp-cli.phar -SL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
     chmod +x /tmp/wp-cli.phar && \
     mv /tmp/wp-cli.phar /usr/local/bin/wp
@@ -51,8 +53,8 @@ RUN chmod +x /usr/local/bin/setup.sh
 # port設定はcompose.yml
 #EXPOSE 9000
 
-ENTRYPOINT ["/usr/local/bin/setup.sh"]
+ENTRYPOINT ["sh", "/usr/local/bin/setup.sh"]
 
 # Start php-fpm
 # todo: php-fpm.confとの関係確認
-CMD ["php-fpm8.2", "--nodaemonize"]
+CMD ["/usr/sbin/php-fpm8.2", "--nodaemonize"]

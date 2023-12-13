@@ -7,8 +7,14 @@
 
 while ! mariadb -h"${WORDPRESS_DB_HOST}" -u"${MARIADB_USER}" -p"${MARIADB_PASSWORD}" "${MARIADB_DATABASE}" --silent; do
     echo 'Waiting for the database server...'
-    sleep 1
+    sleep 10
 done
+# shellcheck disable=SC2181
+if [ $? -eq 0 ]; then
+    echo "Database connected"
+else
+    echo "Failed to connect to the database"
+fi
 #sudo -u www-data wp --info
 # wp-config.php の作成
 # shellcheck disable=SC2164
@@ -42,4 +48,16 @@ wp core install --path=/var/www/html/wordpress/ \
     --admin_email="${WORDPRESS_ADMIN_EMAIL}" \
     --skip-email \
     --allow-root
+
+echo "createuser run"
+wp user create "${WORDPRESS_ADMIN_USER2}" "${WORDPRESS_ADMIN_EMAIL2}" \
+    --role=subscriber \
+    --user_pass="${WORDPRESS_ADMIN_PASSWORD2}" \
+    --allow-root
+echo "end createuser"
 fi
+#/usr/sbin/php-fpm8.2 -F -R
+echo "end!!"
+
+# CMD からのコマンド（この場合は PHP-FPM）を実行
+exec "$@"
