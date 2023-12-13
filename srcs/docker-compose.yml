@@ -16,7 +16,9 @@ services:
       - MYSQL_PASSWORD=${MARIADB_PASSWORD}
     volumes:
       - ./requirements/mariadb/conf/mariadb.cnf:/etc/mysql/mariadb.cnf
-      - data-db:/var/lib/mariadb
+      - ./requirements/mariadb/conf/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf
+      - data-db:/var/lib/mysql # 初回でここがどうbindされているか？
+#      - data-db:/var/lib/mariadb
     networks:
       - docker-network
     restart: always

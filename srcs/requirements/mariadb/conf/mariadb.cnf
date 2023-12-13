@@ -25,7 +25,7 @@ socket = /run/mysqld/mysqld.sock
 [mysqld]
 socket = /run/mysqld/mysqld.sock
 # ネットワークを介した接続を有効にする
-bind-address = 0.0.0.0
+#bind-address = 0.0.0.0
 
 # Import all .cnf files from configuration directory
 !includedir /etc/mysql/conf.d/
