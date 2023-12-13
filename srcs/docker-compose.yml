@@ -64,7 +64,8 @@ services:
     ports:
       - "443:443"
     volumes:
-      - data-wp:/var/www/html/wp
+      - ./requirements/nginx/conf/default.conf:/etc/nginx/conf.d/default.conf
+      - data-wp:/var/www/html/wordpress
     networks:
       - docker-network
     restart: always
