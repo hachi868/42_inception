@@ -4,7 +4,7 @@ setup:
 	@make up
 	@make ps
 
-# コンテナを起動するターゲット
+# コンテナを起動するターゲット -f ファイル指定 -d デタッチモード
 up:
 	docker compose -f $(COMPOSE_FILE) up -d
 
@@ -22,8 +22,9 @@ ps:
 # キャッシュなしでbuild
 build:
 	docker compose -f $(COMPOSE_FILE) build --no-cache
+#	docker compose -f $(COMPOSE_FILE) build --no-cache --progress=plain
 
 rm:
 	docker compose -f $(COMPOSE_FILE) rm
 
-.PHONY: setup up down ps rm
+.PHONY: setup up down ps build rm
