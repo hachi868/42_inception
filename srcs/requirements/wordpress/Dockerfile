@@ -1,6 +1,8 @@
 FROM debian:oldstable
 RUN apt-get update && \
     apt-get install -y \
+    sudo \
+    mariadb-client \
     software-properties-common \
     lsb-release \
     ca-certificates \
@@ -26,22 +28,22 @@ RUN apt-get update && apt-get install -y \
     php8.2-zip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    mkdir -p /var/www/html && \
+    mkdir -p /var/www/html/wordpress/ && \
+    mkdir -p /var/www/.wp-cli/cache/ && \
     mkdir -p /run/php/ && \
     # -o: 指定ファイルパスに保存 -S: エラー時詳細ログ -L: リダイレクト先にアクセス
-    curl -o /tmp/wordpress.zip -SL https://wordpress.org/latest.zip && \
-    # -d: 指定ディレクトリに展開
-    unzip /tmp/wordpress.zip -d /var/www/html/ && \
-    rm /tmp/wordpress.zip && \
-    # 所有権変更 `(ユーザー名):` ユーザー名,グループ名を同じ名で設定
-    chown -R www-data: /var/www/html/ && \
+#    curl -o /tmp/wordpress.zip -SL https://wordpress.org/latest.zip && \
+#    # -d: 指定ディレクトリに展開
+#    unzip /tmp/wordpress.zip -d /var/www/html/ && \
+#    rm /tmp/wordpress.zip && \
+    # 所有権変更 `(ユーザー名):` ユーザー名,グループ名を同じ名で設定 todo: root実行にしたのでいらないかも。
+    chown -R www-data: /var/www/ && \
+    chmod -R +x /var/www/ && \
     curl -o /tmp/wp-cli.phar -SL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
-    mv /tmp/wp-cli.phar /var/www/html/ && \
-    chmod +x /var/www/html/wp-cli.phar && \
-    wp --info
+    chmod +x /tmp/wp-cli.phar && \
+    mv /tmp/wp-cli.phar /usr/local/bin/wp
 
 # Download and install WordPress, chown www-dataに所有権変更
-# Todo: wpはDLしておきたい。　wpバージョン？
 
 COPY ./tools/setup.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/setup.sh

@@ -45,7 +45,7 @@ services:
     volumes:
       - ./requirements/wordpress/conf/www.conf:/etc/php/8.2/fpm/pool.d/www.conf
       - ./requirements/wordpress/conf/php-fpm.conf:/etc/php/8.2/fpm/php-fpm.conf
-      - data-wp:/var/www/html/wp
+      - data-wp:/var/www/html/wordpress
     networks:
       - docker-network
     restart: always
