@@ -81,6 +81,22 @@ services:
 #      wordpress:
 #        condition: service_healthy
 
+  dnsmasq:
+    image: dnsmasq:42_inception
+    build:
+      context: ./requirements/bonus/dns
+      dockerfile: Dockerfile
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    env_file:
+      .env
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+    networks:
+      - docker-network
+    restart: always
+
 networks:
   docker-network:
 
