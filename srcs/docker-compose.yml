@@ -81,6 +81,21 @@ services:
 #      wordpress:
 #        condition: service_healthy
 
+  adminer:
+    image: adminer:42_inception
+    build:
+      context: ./requirements/bonus/adminer
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - docker-network
+    restart: always
+    depends_on:
+      - mariadb
+      - wordpress
+      - nginx
+
 networks:
   docker-network:
 
