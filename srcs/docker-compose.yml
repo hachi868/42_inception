@@ -96,6 +96,21 @@ services:
       - wordpress
       - nginx
 
+  website:
+    image: website:42_inception
+    build:
+      context: ./requirements/bonus/website
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+#    volumes:
+#      - ./requirements/bonus/website/conf/httpd.conf:/etc/apache2/httpd.conf
+    networks:
+      - docker-network
+    restart: always
+    depends_on:
+      - nginx
+
 networks:
   docker-network:
 
