@@ -93,9 +93,12 @@ services:
       .env
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
+    volumes:
+      - ./requirements/bonus/dns/conf/dnsmasq.conf:/etc/dnsmasq.conf
     networks:
       - docker-network
     restart: always
+    network_mode: host
 
 networks:
   docker-network:

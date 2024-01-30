@@ -7,5 +7,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 EXPOSE 53 53/udp
-#ENTRYPOINT ["dnsmasq", "-k"]
-CMD ["/bin/bash"]
+# ENTRYPOINT ["dnsmasq", "-k"]
+# CMD ["/bin/bash"]
+
+CMD ["dnsmasq", "--no-daemon"]
