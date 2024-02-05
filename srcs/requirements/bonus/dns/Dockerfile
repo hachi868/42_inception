@@ -6,6 +6,8 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-EXPOSE 53 53/udp
-#ENTRYPOINT ["dnsmasq", "-k"]
-CMD ["/bin/bash"]
+# カスタムDNS設定を環境変数に設定
+ENV DNSMASQ_OPTS="--conf-file=/etc/dnsmasq.conf"
+
+#ENTRYPOINT ["setup.sh"]
+CMD ["dnsmasq", "-k"]
