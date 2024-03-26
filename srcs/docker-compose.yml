@@ -17,8 +17,7 @@ services:
     volumes:
       - ./requirements/mariadb/conf/mariadb.cnf:/etc/mysql/mariadb.cnf
       - ./requirements/mariadb/conf/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf
-      - data-db:/var/lib/mysql # 初回でここがどうbindされているか？
-#      - data-db:/var/lib/mariadb
+      - data-db:/var/lib/mysql
     networks:
       - docker-network
     restart: always
@@ -64,14 +63,17 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "5173:5173"
     env_file:
       .env
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
     volumes:
       - ./requirements/nginx/conf/default.conf:/etc/nginx/sites-enabled/default
+      - ./requirements/nginx/conf/static.conf:/etc/nginx/conf.d/static.conf
       - ./requirements/nginx/tools/ssl:/etc/nginx/ssl
       - data-wp:/var/www/html/wordpress
+      - data-staticsite:/var/www/html/staticsite
     networks:
       - docker-network
     restart: always
@@ -122,20 +124,14 @@ services:
       - wordpress
       - nginx
 
-  website:
-    image: website:42_inception
+  # ファイルをvolumeに設置するだけのコンテナ
+  staticsite:
+    image: staticsite:42_inception
     build:
-      context: ./requirements/bonus/website
+      context: ./requirements/bonus/staticsite
       dockerfile: Dockerfile
-    ports:
-      - "5173:5173"
-#    volumes:
-#      - ./requirements/bonus/website/conf/httpd.conf:/etc/apache2/httpd.conf
-    networks:
-      - docker-network
-    restart: always
-    depends_on:
-      - nginx
+    volumes:
+      - data-staticsite:/usr/share/nginx/html
 
 networks:
   docker-network:
@@ -144,4 +140,6 @@ volumes:
   data-db:
     driver: local
   data-wp:
+    driver: local
+  data-staticsite:
     driver: local
