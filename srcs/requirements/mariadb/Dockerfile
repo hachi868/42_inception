@@ -13,7 +13,7 @@ RUN chmod +x /usr/local/bin/setup.sh
 # ポート3306を公開
 EXPOSE 3306
 
-ENTRYPOINT ["setup.sh"]
+ENTRYPOINT ["/usr/local/bin/setup.sh"]
 
 # MariaDBサーバーを実行
 CMD ["mysqld"]

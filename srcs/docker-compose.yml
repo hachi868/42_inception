@@ -70,6 +70,7 @@ services:
       - DOMAIN_NAME=${DOMAIN_NAME}
     volumes:
       - ./requirements/nginx/conf/default.conf:/etc/nginx/sites-enabled/default
+      - ./requirements/nginx/tools/ssl:/etc/nginx/ssl
       - data-wp:/var/www/html/wordpress
     networks:
       - docker-network
@@ -77,26 +78,22 @@ services:
     depends_on:
       - mariadb
       - wordpress
-#      mariadb:
-#        condition: service_healthy
-#      wordpress:
-#        condition: service_healthy
 
-  redis:
-    image: redis:42_inception
-    build:
-      context: ./requirements/bonus/redis
-      dockerfile: Dockerfile
-    ports:
-      - "6379:6379"
-    networks:
-      - docker-network
-    restart: always
-    depends_on:
-      - mariadb
-      - wordpress
+#  redis:
+#    image: redis:42_inception
+#    build:
+#      context: ./requirements/bonus/redis
+#      dockerfile: Dockerfile
+#    ports:
+#      - "6379:6379"
+#    networks:
+#      - docker-network
+#    restart: always
+#    depends_on:
+#      - mariadb
+#      - wordpress
 
-  # website:
+  # ftp:
   #   image: ftp:42_inception
   #   build:
   #     context: ./requirements/bonus/ftp

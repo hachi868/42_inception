@@ -35,8 +35,6 @@ wp config create --path=/var/www/html/wordpress/ \
     --dbuser="${MARIADB_USER}" \
     --dbpass="${MARIADB_PASSWORD}" \
     --dbhost="${WORDPRESS_DB_HOST}" \
-    --dbredishost="${REDIS_HOST}" \
-    --dbhost="${REDIS_PORT}" \
     --dbcharset="utf8mb4" \
     --dbcollate="utf8mb4_general_ci" \
     --allow-root
