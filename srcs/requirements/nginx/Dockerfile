@@ -1,5 +1,7 @@
 FROM debian:oldstable
 
+ARG DOMAIN_NAME
+
 # Nginxと必要なパッケージをインストール
 RUN apt-get update && \
     apt-get install -y \
