@@ -1,10 +1,11 @@
 COMPOSE_FILE := ./srcs/docker-compose.yml
 
+# デフォルトはsetup
 setup:
 	@make up
 	@make ps
 
-# コンテナを起動するターゲット -f ファイル指定 -d デタッチモード
+# コンテナを起動するターゲット -f ファイル指定 -d デタッチモード(バックグラウンドで起動)
 up:
 	docker compose -f $(COMPOSE_FILE) up -d
 
