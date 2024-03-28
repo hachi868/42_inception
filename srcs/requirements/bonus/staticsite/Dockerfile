@@ -1,3 +1,7 @@
 FROM debian:oldstable
 
-COPY ./public /usr/share/nginx/html
+RUN apt-get update && apt-get install -y apache2
+
+COPY ./public /var/www/html
+
+CMD ["apache2ctl", "-D", "FOREGROUND"]

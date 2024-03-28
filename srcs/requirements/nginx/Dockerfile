@@ -14,8 +14,7 @@ RUN apt-get update && \
 # Nginxのデフォルト設定を削除
 RUN rm /etc/nginx/sites-enabled/default
 
-# ポート80, 443を公開
-EXPOSE 80 443
+#EXPOSE 443
 
 COPY ./tools/setup.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/setup.sh

@@ -52,8 +52,6 @@ services:
     restart: always
     depends_on:
       - mariadb
-#      mariadb:
-#        condition: service_healthy
 
   nginx:
     image: nginx:42_inception
@@ -61,53 +59,21 @@ services:
       context: ./requirements/nginx
       dockerfile: Dockerfile
     ports:
-      - "80:80"
       - "443:443"
-      - "5173:5173"
     env_file:
       .env
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
     volumes:
       - ./requirements/nginx/conf/default.conf:/etc/nginx/sites-enabled/default
-      - ./requirements/nginx/conf/static.conf:/etc/nginx/conf.d/static.conf
       - ./requirements/nginx/tools/ssl:/etc/nginx/ssl
       - data-wp:/var/www/html/wordpress
-      - data-staticsite:/var/www/html/staticsite
     networks:
       - docker-network
     restart: always
     depends_on:
       - mariadb
       - wordpress
-
-#  redis:
-#    image: redis:42_inception
-#    build:
-#      context: ./requirements/bonus/redis
-#      dockerfile: Dockerfile
-#    ports:
-#      - "6379:6379"
-#    networks:
-#      - docker-network
-#    restart: always
-#    depends_on:
-#      - mariadb
-#      - wordpress
-
-  # ftp:
-  #   image: ftp:42_inception
-  #   build:
-  #     context: ./requirements/bonus/ftp
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "21:21"
-  #   networks:
-  #     - docker-network
-  #   restart: always
-  #   depends_on:
-  #     - mariadb
-  #     - wordpress
 
   adminer:
     image: adminer:42_inception
@@ -124,14 +90,19 @@ services:
       - wordpress
       - nginx
 
-  # ファイルをvolumeに設置するだけのコンテナ
   staticsite:
     image: staticsite:42_inception
     build:
       context: ./requirements/bonus/staticsite
       dockerfile: Dockerfile
+    ports:
+      - "5173:80"
     volumes:
-      - data-staticsite:/usr/share/nginx/html
+      - ./requirements/staticsite/conf/httpd.conf:/etc/apache2/httpd.conf
+      - data-staticsite:/var/www/html
+    networks:
+        - docker-network
+    restart: always
 
 networks:
   docker-network:
@@ -143,3 +114,8 @@ volumes:
     driver: local
   data-staticsite:
     driver: local
+
+
+# todo: image name
+# todo: volume path
+# todo: exited 137
