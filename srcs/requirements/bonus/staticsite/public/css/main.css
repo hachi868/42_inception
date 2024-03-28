@@ -265,19 +265,8 @@ textarea {
 :root {
   --main-bg-color: #002534;
   --main-content-color: #01BABC;
-  --rad-level0: 6rem;
-  --rad-level1: 16rem;
-  --rad-level2: 30rem;
-  --rad-level3: 44rem;
-  --rad-level4: 58rem;
-  --rad-level5: 72rem;
-  --rad-level6: 86rem;
-  --rad-mini: 6rem;
-  --diff-sep: 0.45;
-  --deg-sep0: -90deg;
-  --deg-sep1: 0deg;
-  --deg-sep2: 90deg;
-  --deg-sep3: 180deg;
+  --rad-planet: 6rem;
+  --rad-max: 86rem;
   font-size: 10px;
   font-family: Futura, serif;
 }
@@ -325,12 +314,14 @@ textarea {
 @media screen and (min-width: 768px) {
   /* mainArea */
   .mainArea {
-    min-width: var(--rad-level6);
+    min-width: var(--rad-max);
   }
 
   /* secCircle */
   .secCircle {
     position: absolute;
+    width: var(--rad);
+    height: var(--rad);
   }
   .secCircle h2 {
     display: none;
@@ -386,14 +377,7 @@ textarea {
     font-size: 1.2rem;
   }
 
-  .secCircle .blockCategory {
-    position: absolute;
-    color: #fff;
-    font-size: 1.1rem;
-    z-index: 100;
-  }
-
-  .secCircle p a {
+  .secCircle .blockExam a {
     display: block;
     width: 100%;
     height: 3em;
@@ -402,62 +386,69 @@ textarea {
     text-decoration: none;
     background-color: var(--main-content-color);
     color: #fff;
+    transition: transform 0.24s cubic-bezier(0.25, 1.71, 0.57, 1.61);
+  }
+  .secCircle .blockExam a:hover {
+    transform: scale(1.1);
+  }
+
+  .secCircle .blockCategory {
+    position: absolute;
+    color: #fff;
+    font-size: 1.1rem;
+    z-index: 100;
   }
 
   .secCircle--level0 {
-    width: var(--rad-level0);
-    height: var(--rad-level0);
+    --rad: var(--rad-planet);
     z-index: 6;
   }
 
   .secCircle--level1 {
-    width: var(--rad-level1);
-    height: var(--rad-level1);
+    --rad: 16rem;
     z-index: 5;
   }
 
   .secCircle--level2 {
-    width: var(--rad-level2);
-    height: var(--rad-level2);
+    --rad: 30rem;
     z-index: 4;
   }
 
   .secCircle--level3 {
-    width: var(--rad-level3);
-    height: var(--rad-level3);
+    --rad: 44rem;
     z-index: 3;
   }
 
   .secCircle--level4 {
-    width: var(--rad-level4);
-    height: var(--rad-level4);
+    --rad: 58rem;
     z-index: 2;
   }
 
   .secCircle--level5 {
-    width: var(--rad-level5);
-    height: var(--rad-level5);
+    --rad: 72rem;
     z-index: 1;
   }
   .secCircle--level6 {
-    width: var(--rad-level6);
-    height: var(--rad-level6);
+    --rad: var(--rad-max);
     z-index: 0;
   }
   .secCircle li {
-    width: var(--rad-level0);
-    height: var(--rad-level0);
+    width: var(--rad-planet);
+    height: var(--rad-planet);
     text-align: center;
   }
   .secCircle li a {
     display: block;
     width: 100%;
-    height: var(--rad-level0);
-    line-height: var(--rad-level0);
+    height: var(--rad-planet);
+    line-height: var(--rad-planet);
     background-color: var(--main-content-color);
     border-radius: 50%;
     font-size: 1.1rem;
-    opacity: 0.5;
+    transition: transform 0.24s cubic-bezier(0.25, 1.71, 0.57, 1.61);
+  }
+  .secCircle li a:hover {
+    transform: scale(1.1);
   }
 
   .secCircle li a span {
@@ -465,133 +456,122 @@ textarea {
     margin: 0 -2em;
   }
 
-  .secCircle .is-separated li {
-    width: var(--rad-mini);
-    height: var(--rad-mini);
-  }
-
-  .secCircle .is-separated li a {
-    position: relative;
-    width: var(--rad-mini);
-    height: var(--rad-mini);
-    line-height: var(--rad-mini);
-  }
-
-  .secCircle li a span.is-line3 {
-    display: flex;
-    align-items: center;
-    width: var(--rad-mini);
-    height: 100%;
-    margin: 0 auto;
-    line-height: 1.3rem;
-    opacity: 0.5;
-  }
-
-  .secCircle--level1 > ul > li:nth-child(1) {
-    transform: translate(calc(cos(-60deg) * var(--rad-level1) / 2), calc(sin(-60deg) * var(--rad-level1) / 2));
-  }
-
-  .secCircle--level1 > ul > li:nth-child(2) {
-    transform: translate(calc(cos(60deg) * var(--rad-level1) / 2), calc(sin(60deg) * var(--rad-level1) / 2));
-  }
-
-  .secCircle--level1 > ul > li:nth-child(3) {
-    transform: translate(calc(cos(180deg) * var(--rad-level1) / 2), calc(sin(180deg) * var(--rad-level1) / 2));
-  }
-
-  .secCircle--level2 > ul > li:nth-child(1) {
-    /*transform: translate(calc(cos(90deg) * var(--rad-level2) / 2), calc(sin(90deg) * var(--rad-level2) / 2));*/
-  }
-
-  .secCircle--level2 > ul > li:nth-child(1) .is-selectable > li:nth-child(1) {
-    transform: translate(calc(cos(95deg) * var(--rad-level2) / 2), calc(sin(95deg) * var(--rad-level2) / 2));
-  }
-
-  .secCircle--level2 > ul > li:nth-child(1) .is-selectable > li:nth-child(2) {
-    transform: translate(calc(cos(115deg) * var(--rad-level2) / 2), calc(sin(115deg) * var(--rad-level2) / 2));
-  }
-
-  .secCircle--level2 > ul > li:nth-child(2) {
-    /*transform: translate(calc(cos(215deg) * var(--rad-level2) / 2), calc(sin(215deg) * var(--rad-level2) / 2));*/
-  }
-
-  .secCircle--level2 > ul > li:nth-child(2) .is-selectable > li:nth-child(1) {
-    transform: translate(calc(cos(350deg) * var(--rad-level2) / 2), calc(sin(350deg) * var(--rad-level2) / 2));
-  }
-
-  .secCircle--level2 > ul > li:nth-child(2) .is-selectable > li:nth-child(2) {
-    transform: translate(calc(cos(350deg) * var(--rad-level2) / 2), calc(sin(350deg) * var(--rad-level2) / 2));
-  }
-
-  .secCircle--level2 > ul > li:nth-child(2) .is-selectable > li:nth-child(3) {
-    transform: translate(calc(cos(350deg) * var(--rad-level2) / 2), calc(sin(350deg) * var(--rad-level2) / 2));
-  }
-
-  .secCircle--level2 > ul > li:nth-child(3) {
-    transform: translate(calc(cos(215deg) * var(--rad-level2) / 2), calc(sin(215deg) * var(--rad-level2) / 2));
-  }
-
-  .secCircle--level3 > ul > li:nth-child(1) {
-    transform: translate(calc(cos(30deg) * var(--rad-level3) / 2), calc(sin(30deg) * var(--rad-level3) / 2));
-  }
-
-  .secCircle--level3 > ul > li:nth-child(2) {
-    transform: translate(calc(cos(150deg) * var(--rad-level3) / 2), calc(sin(150deg) * var(--rad-level3) / 2));
-  }
-
-  .secCircle--level4 > ul > li:nth-child(1) {
-    transform: translate(calc(cos(-60deg) * var(--rad-level4) / 2), calc(sin(-60deg) * var(--rad-level4) / 2));
-  }
-
-  .secCircle--level4 > ul > li:nth-child(2) {
-    transform: translate(calc(cos(60deg) * var(--rad-level4) / 2), calc(sin(60deg) * var(--rad-level4) / 2));
-  }
-
-  .secCircle--level4 > ul > li:nth-child(3) {
-    transform: translate(calc(cos(180deg) * var(--rad-level4) / 2), calc(sin(180deg) * var(--rad-level4) / 2));
-  }
-
-  .secCircle--level5 > ul > li:nth-child(1) {
-    transform: translate(calc(cos(-30deg) * var(--rad-level5) / 2), calc(sin(-30deg) * var(--rad-level5) / 2));
-  }
-
-  .secCircle--level5 > ul > li:nth-child(2) {
-    transform: translate(calc(cos(90deg) * var(--rad-level5) / 2), calc(sin(90deg) * var(--rad-level5) / 2));
-  }
-
-  .secCircle--level5 > ul > li:nth-child(3) {
-    transform: translate(calc(cos(210deg) * var(--rad-level5) / 2), calc(sin(210deg) * var(--rad-level5) / 2));
-  }
-
-  .secCircle--level6 > ul > li:nth-child(1) {
-    transform: translate(calc(cos(90deg) * var(--rad-level6) / 2), calc(sin(90deg) * var(--rad-level6) / 2));
-  }
-
   .is-selectable > li:nth-child(1) {
-    /*transform: translate(calc(cos(var(--deg-sep0)) * var(--rad-mini) * var(--diff-sep)), calc(sin(var(--deg-sep0)) * var(--rad-mini) * var(--diff-sep)));*/
+    transform: translate(calc(cos(calc(var(--deg-basis) - var(--deg-diff) * 0)) * var(--rad) / 2), calc(sin(calc(var(--deg-basis) - var(--deg-diff) * 0)) * var(--rad) / 2));
   }
 
   .is-selectable > li:nth-child(2) {
-    /*transform: translate(calc(cos(var(--deg-sep1)) * var(--rad-mini) * var(--diff-sep)), calc(sin(var(--deg-sep1)) * var(--rad-mini) * var(--diff-sep)));*/
+    transform: translate(calc(cos(calc(var(--deg-basis) - var(--deg-diff) * 1)) * var(--rad) / 2), calc(sin(calc(var(--deg-basis) - var(--deg-diff) * 1)) * var(--rad) / 2));
   }
 
-  .is-separated > li:nth-child(1) {
-    transform: translate(calc(cos(var(--deg-sep0)) * var(--rad-mini) * var(--diff-sep)), calc(sin(var(--deg-sep0)) * var(--rad-mini) * var(--diff-sep)));
+  .is-selectable > li:nth-child(3) {
+    transform: translate(calc(cos(calc(var(--deg-basis) - var(--deg-diff) * 2)) * var(--rad) / 2), calc(sin(calc(var(--deg-basis) - var(--deg-diff) * 2)) * var(--rad) / 2));
   }
 
-  .is-separated > li:nth-child(2) {
-    transform: translate(calc(cos(var(--deg-sep1)) * var(--rad-mini) * var(--diff-sep)), calc(sin(var(--deg-sep1)) * var(--rad-mini) * var(--diff-sep)));
+  .is-piscene {
+    --deg-basis: 0deg;
+    --deg-diff: 72deg;
   }
 
-  .is-separated > li:nth-child(3) {
-    transform: translate(calc(cos(var(--deg-sep2)) * var(--rad-mini) * var(--diff-sep)), calc(sin(var(--deg-sep2)) * var(--rad-mini) * var(--diff-sep)));
+  .is-piscene .is-line3 {
+    display: flex;
+    align-items: center;
+    width: var(--rad-planet);
+    height: 100%;
+    margin: 0 auto;
+    line-height: 1.3rem;
+    color: var(--main-content-color);
   }
 
-  .is-separated > li:nth-child(4) {
-    transform: translate(calc(cos(var(--deg-sep3)) * var(--rad-mini) * var(--diff-sep)), calc(sin(var(--deg-sep3)) * var(--rad-mini) * var(--diff-sep)));
+  .is-piscene > li:nth-child(1) {
+    transform: translate(calc(cos(var(--deg-basis) + var(--deg-diff) * 0) * var(--rad-planet) / 2), calc(sin(var(--deg-basis) + var(--deg-diff) * 0) * var(--rad-planet) / 2));
   }
 
-  .is-separated > li:nth-child(5) {
+  .is-piscene > li:nth-child(2) {
+    transform: translate(calc(cos(var(--deg-basis) + var(--deg-diff) * 1) * var(--rad-planet) / 2), calc(sin(var(--deg-basis) + var(--deg-diff) * 1) * var(--rad-planet) / 2));
+  }
 
+  .is-piscene > li:nth-child(3) {
+    transform: translate(calc(cos(var(--deg-basis) + var(--deg-diff) * 2) * var(--rad-planet) / 2), calc(sin(var(--deg-basis) + var(--deg-diff) * 2) * var(--rad-planet) / 2));
+  }
+
+  .is-piscene > li:nth-child(4) {
+    transform: translate(calc(cos(var(--deg-basis) + var(--deg-diff) * 3) * var(--rad-planet) / 2), calc(sin(var(--deg-basis) + var(--deg-diff) * 3) * var(--rad-planet) / 2));
+  }
+
+  .is-piscene > li:nth-child(5) {
+    transform: translate(calc(cos(var(--deg-basis) + var(--deg-diff) * 4) * var(--rad-planet) / 2), calc(sin(var(--deg-basis) + var(--deg-diff) * 4) * var(--rad-planet) / 2));
+  }
+
+  .secCircle--level1 > ul > li:nth-child(1) {
+    transform: translate(calc(cos(-60deg) * var(--rad) / 2), calc(sin(-60deg) * var(--rad) / 2));
+  }
+
+  .secCircle--level1 > ul > li:nth-child(2) {
+    transform: translate(calc(cos(60deg) * var(--rad) / 2), calc(sin(60deg) * var(--rad) / 2));
+  }
+
+  .secCircle--level1 > ul > li:nth-child(3) {
+    transform: translate(calc(cos(180deg) * var(--rad) / 2), calc(sin(180deg) * var(--rad) / 2));
+  }
+
+  .secCircle--level2 > ul > li:nth-child(1) {
+    --deg-basis: 130deg;
+    --deg-diff: 20deg;
+  }
+
+  .secCircle--level2 > ul > li:nth-child(2) {
+    --deg-basis: 20deg;
+    --deg-diff: 20deg;
+  }
+
+  .secCircle--level2 > ul > li:nth-child(3) {
+    transform: translate(calc(cos(215deg) * var(--rad) / 2), calc(sin(215deg) * var(--rad) / 2));
+  }
+
+  .secCircle--level3 > ul > li:nth-child(1) {
+    transform: translate(calc(cos(60deg) * var(--rad) / 2), calc(sin(60deg) * var(--rad) / 2));
+  }
+
+  .secCircle--level3 > ul > li:nth-child(2) {
+    transform: translate(calc(cos(150deg) * var(--rad) / 2), calc(sin(150deg) * var(--rad) / 2));
+  }
+
+  .secCircle--level4 > ul > li:nth-child(1) {
+    transform: translate(calc(cos(-60deg) * var(--rad) / 2), calc(sin(-60deg) * var(--rad) / 2));
+  }
+
+  .secCircle--level4 > ul > li:nth-child(2) {
+    --deg-basis: 30deg;
+    --deg-diff: 10deg;
+  }
+
+  .secCircle--level4 > ul > li:nth-child(3) {
+    transform: translate(calc(cos(190deg) * var(--rad) / 2), calc(sin(190deg) * var(--rad) / 2));
+  }
+
+  .secCircle--level5 > ul > li:nth-child(1) {
+    transform: translate(calc(cos(-30deg) * var(--rad) / 2), calc(sin(-30deg) * var(--rad) / 2));
+  }
+
+  .secCircle--level5 > ul > li:nth-child(2) {
+    --deg-basis: 130deg;
+    --deg-diff: 8deg;
+    --deg-rad: 3rem;
+  }
+
+  .secCircle--level5 > ul > li:nth-child(3) {
+    transform: translate(calc(cos(220deg) * var(--rad) / 2), calc(sin(220deg) * var(--rad) / 2));
+  }
+
+  .secCircle--level6 > ul > li:nth-child(1) {
+    width: calc(var(--rad-planet) * 1.8);
+    height: calc(var(--rad-planet) * 1.8);
+    transform: translate(calc(cos(90deg) * var(--rad) / 2), calc(sin(90deg) * var(--rad) / 2));
+  }
+
+  .secCircle--level6 > ul > li:nth-child(1) a {
+    height: calc(var(--rad-planet) * 1.8);
+    line-height: calc(var(--rad-planet) * 1.8);
   }
 }
