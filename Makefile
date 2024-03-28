@@ -1,4 +1,6 @@
 COMPOSE_FILE := ./srcs/docker-compose.yml
+include ./srcs/.env
+export $(shell sed 's/=.*//' ./srcs/.env)
 
 # デフォルトはsetup
 setup:
@@ -7,6 +9,8 @@ setup:
 
 # コンテナを起動するターゲット -f ファイル指定 -d デタッチモード(バックグラウンドで起動)
 up:
+	@mkdir -p $(PATH_DATA)db
+	@mkdir -p $(PATH_DATA)wp
 	docker compose -f $(COMPOSE_FILE) up -d
 
 # コンテナを停止するターゲット

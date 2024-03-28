@@ -110,11 +110,16 @@ networks:
 volumes:
   data-db:
     driver: local
+    driver_opts:
+      type: none
+      device: ${PATH_DATA}db
+      o: bind
   data-wp:
     driver: local
-  data-staticsite:
-    driver: local
-
+    driver_opts:
+      type: none
+      device: ${PATH_DATA}wp
+      o: bind
 
 # todo: image name
 # todo: volume path
