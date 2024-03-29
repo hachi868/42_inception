@@ -14,8 +14,6 @@ RUN apt-get update && \
 # Nginxのデフォルト設定を削除
 RUN rm /etc/nginx/sites-enabled/default
 
-#EXPOSE 443
-
 COPY ./tools/setup.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/setup.sh
 ENTRYPOINT ["/usr/local/bin/setup.sh"]

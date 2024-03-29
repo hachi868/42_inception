@@ -1,10 +1,5 @@
 #!/bin/bash
 
-#until mariadb -h"${WORDPRESS_DB_HOST}" -u${MARIADB_USER} -p"${MARIADB_PASSWORD}" -e 'SELECT 1;' > /dev/null 2>&1; do
-#    echo 'Waiting for the database server...'
-#    sleep 1
-#done
-
 while ! mariadb -h"${WORDPRESS_DB_HOST}" -u"${MARIADB_USER}" -p"${MARIADB_PASSWORD}" "${MARIADB_DATABASE}" --silent; do
     echo 'Waiting for the database server...'
     sleep 10

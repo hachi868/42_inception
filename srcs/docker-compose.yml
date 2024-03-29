@@ -97,9 +97,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5173:80"
-    volumes:
-      - ./requirements/staticsite/conf/httpd.conf:/etc/apache2/httpd.conf
-      - data-staticsite:/var/www/html
     networks:
         - docker-network
     restart: always
@@ -120,7 +117,3 @@ volumes:
       type: none
       device: ${PATH_DATA}wp
       o: bind
-
-# todo: image name
-# todo: volume path
-# todo: exited 137
