@@ -10,9 +10,6 @@ RUN apt-get update && \
 COPY ./tools/setup.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/setup.sh
 
-# ポート3306を公開
-EXPOSE 3306
-
 ENTRYPOINT ["/usr/local/bin/setup.sh"]
 
 # MariaDBサーバーを実行
