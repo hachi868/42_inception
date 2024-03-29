@@ -268,7 +268,9 @@ textarea {
   --rad-planet: 6rem;
   --rad-max: 86rem;
   font-size: 10px;
-  font-family: Futura, serif;
+  font-family: "futura-pt", sans-serif;
+  font-weight: 500;
+  font-style: normal;
 }
 
 
@@ -354,12 +356,15 @@ textarea {
 @media screen and (min-width: 768px) {
   /* mainArea */
   .mainArea {
+    overflow: hidden;
     min-width: var(--rad-max);
   }
   .mainArea h1 {
+    position: relative;
     text-align: center;
     background: var(--main-content-color);
     border-bottom: none;
+    z-index: 10;
   }
 
   /* secCircle */
