@@ -50,6 +50,12 @@ services:
     networks:
       - docker-network
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://mariadb/health"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     depends_on:
       - mariadb
 
@@ -71,6 +77,12 @@ services:
     networks:
       - docker-network
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://wordpress/health"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     depends_on:
       - mariadb
       - wordpress
@@ -85,6 +97,12 @@ services:
     networks:
       - docker-network
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://nginx/health"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     depends_on:
       - mariadb
       - wordpress
