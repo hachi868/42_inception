@@ -12,5 +12,5 @@ RUN chmod +x /usr/local/bin/setup.sh
 
 ENTRYPOINT ["/usr/local/bin/setup.sh"]
 
-# MariaDBサーバーを実行
+# MariaDBサーバープロセスを実行
 CMD ["mysqld"]
