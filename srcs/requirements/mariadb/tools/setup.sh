@@ -32,10 +32,10 @@ shutdown_server() {
 
   # コマンドの実行結果を検証
   if [ $? -eq 0 ]; then
-      echo "MariaDB has been stopped successfully."
+    echo "MariaDB has been stopped successfully."
   else
-      echo "Failed to stop MariaDB."
-      exit 1
+    echo "Failed to stop MariaDB."
+    exit 1
   fi
 }
 
