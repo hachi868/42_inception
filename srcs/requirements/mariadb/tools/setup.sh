@@ -44,7 +44,7 @@ start_server()
 
 # データベースが存在しない場合にのみ初期設定を実行
 if ! mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "use ${MARIADB_DATABASE}"; then
-mysql -u root -p"${MYSQL_ROOT_PASSWORD}" <<-EOSQL
+  mysql -u root -p"${MYSQL_ROOT_PASSWORD}" <<-EOSQL
     CREATE DATABASE IF NOT EXISTS "${MARIADB_DATABASE}";
     CREATE USER IF NOT EXISTS "${MARIADB_USER}"@"%" IDENTIFIED BY "${MARIADB_PASSWORD}";
     GRANT ALL PRIVILEGES ON "${MARIADB_DATABASE}".* TO "${MARIADB_USER}"@"%";
